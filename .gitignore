@@ -1,0 +1,53 @@
+# Node & package files
+node_modules/
+# Build output
+.next/
+.dist/
+out/
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+# OS files
+.DS_Store
+Thumbs.db
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# IDEs & editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# Test coverage
+coverage/
+# Misc
+*.tgz
+*.zip
+*.tar.gz
+# Vercel
+.vercel/
+# Turbo repo cache
+.turbo/
+# Public assets generated at build
+public/build/
+# Next.js static files
+.next/**/cache
+# Optional: local config files
+*.local
+# MacOS metadata
+._*
+# Windows thumbnail cache
+Desktop.ini
+# Misc temporary files
+*.log
+# Lock files – keep them versioned
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

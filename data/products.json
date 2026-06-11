@@ -1,0 +1,47 @@
+[
+  {
+    "id": "p1",
+    "name": "Pala Pro Carbon",
+    "slug": "pala-pro-carbon",
+    "category": "Palas",
+    "price": 149.99,
+    "currency": "USD",
+    "imageBlobId": "sample-pala-1.jpg",
+    "description": "Pala de carbono de alta calidad para jugadores profesionales",
+    "specs": {
+      "weight": "375g",
+      "balance": "90mm",
+      "material": "Carbono 12K"
+    }
+  },
+  {
+    "id": "p2",
+    "name": "Zapatillas Power Pro",
+    "slug": "zapatillas-power-pro",
+    "category": "Zapatillas",
+    "price": 89.99,
+    "currency": "USD",
+    "imageBlobId": "sample-shoes-1.jpg",
+    "description": "Zapatillas especializadas para pádel con soporte lateral reforzado"
+  },
+  {
+    "id": "p3",
+    "name": "Polo Técnico Premium",
+    "slug": "polo-tecnico-premium",
+    "category": "Ropa",
+    "price": 39.99,
+    "currency": "USD",
+    "imageBlobId": "sample-shirt-1.jpg",
+    "description": "Polo técnico transpirable con tecnología anti-humedad"
+  },
+  {
+    "id": "p4",
+    "name": "Paletero Elite",
+    "slug": "paletero-elite",
+    "category": "Paleteros",
+    "price": 59.99,
+    "currency": "USD",
+    "imageBlobId": "sample-bag-1.jpg",
+    "description": "Paletero profesional con capacidad para 3 palas"
+  }
+]

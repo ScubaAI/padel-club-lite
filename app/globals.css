@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   1. VARIABLES DE DISEÑO (Design Tokens)
+   Sincronizadas con design-system.md para consistencia total
+   ============================================================ */
+@layer base {
+  :root {
+    /* Paleta Sporty Tech Minimalist */
+    --color-primary: #00D4FF;      /* Electric Blue - Energía/Tech */
+    --color-secondary: #1A1A1A;    /* Deep Charcoal - Contraste/Premium */
+    --color-accent: #CCFF00;       /* Neon Lime - Acción/CTAs */
+    --color-background: #FFFFFF;   /* Clean White */
+    --color-surface: #F5F5F7;      /* Light Gray - Tarjetas/Inputs */
+    
+    /* Bitcoin / Pagos (Reservado para Blink/Lightning) */
+    --color-bitcoin: #F7931A;      
+    
+    /* Tipografía Base */
+    --font-oswald: 'Oswald', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --font-space: 'Space Grotesk', monospace;
+  }
+
+  /* Modo Oscuro (Preparado para next-themes) */
+  .dark {
+    --color-background: #0a0a0a;
+    --color-surface: #171717;
+    --color-secondary: #ffffff;
+  }
+
+  /* Reset Moderno & Mobile Optimized */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent; /* Elimina flash azul en móviles */
+  }
+
+  body {
+    font-family: var(--font-inter);
+    background-color: var(--color-background);
+    color: var(--color-secondary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* Previene scroll horizontal accidental en móvil */
+  }
+
+  /* Tipografía Jerárquica por Defecto */
+  h1, h2, h3, .heading-sporty {
+    font-family: var(--font-oswald);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .font-tech, code, .price-tag {
+    font-family: var(--font-space);
+  }
+}
+
+/* ============================================================
+   2. UTILIDADES PERSONALIZADAS (Mobile-First UX)
+   ============================================================ */
+@layer utilities {
+  /* Scroll Snap Nativo para Categorías (CategoryRail) */
+  .scroll-snap-x {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .scroll-snap-x::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+  
+  .snap-start { scroll-snap-align: start; }
+  .snap-center { scroll-snap-align: center; }
+
+  /* Safe Area para Móviles (Notch/Home Indicator) */
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+
+  /* Efectos de Interacción Premium */
+  .tap-scale { transition: transform 0.15s ease; }
+  .tap-scale:active { transform: scale(0.96); }
+
+  /* Sombras Neón Controladas */
+  .shadow-neon-lime { box-shadow: 0 0 20px -5px rgba(204, 255, 0, 0.4); }
+  .shadow-neon-blue { box-shadow: 0 0 20px -5px rgba(0, 212, 255, 0.4); }
+}
+
+/* ============================================================
+   3. ANIMACIONES GLOBALES (Framer Motion Helpers)
+   ============================================================ */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
