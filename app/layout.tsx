@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { fontOswald, fontInter, fontSpaceGrotesk } from '@/lib/fonts';
 import './globals.css';
 import { VirtualAssistant } from '@/components/shared/VirtualAssistant';
+import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: {
@@ -44,8 +45,7 @@ export default function RootLayout({
           {children}
         </main>
         
-        {/* Espacio reservado para futuros elementos flotantes globales */}
-        <div id="global-overlays" />
+        <Footer />
       </body>
     </html>
   );
