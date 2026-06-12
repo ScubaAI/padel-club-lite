@@ -1,58 +1,36 @@
-# ️ Padel Outlet Club Lite - Bitácora de Mantenimiento
+# 📝 Mantenimiento.md - Resumen del Sprint 1: Cimientos Arquitectónicos
 
-> **Sprint Inaugural:** Junio 11, 2026  
-> **Estado:** MVP Funcional ✅ | **Rama:** master
+**Fecha:** 13 de Junio, 2026  
+**Estado:** ✅ Build Exitoso | **Versión:** 1.0.0 (Lite)
 
-## 📋 Resumen de Avances del Día
+## 1. Configuración del Entorno (Core)
 
-Hoy se completó la fase de construcción inicial del proyecto. Se pasó de cero a un MVP funcional con arquitectura modular, integración de pagos Bitcoin y asistente AI.
+- **package.json:** Dependencias críticas instaladas (framer-motion, groq-sdk, @vercel/blob, zod, lucide-react). Scripts optimizados con --turbo.
+- **next.config.mjs:** Configuración de imágenes remotas para Vercel Blob y Unsplash (desarrollo). Optimización de formatos AVIF/WebP.
+- **tailwind.config.ts:** Implementación del Design System "Sporty Tech Minimalist". Variables CSS para paleta de colores (Electric Blue, Neon Lime), fuentes y utilidades custom (.no-scrollbar).
+- **globals.css:** Definición de tokens de diseño, reset moderno, optimizaciones móviles (safe-area, tap-highlight) y animaciones globales (fade-in-up).
 
-### ✅ Logros Técnicos Completados
+## 2. Capa de Lógica y Datos (/lib)
 
-| Componente | Estado | Notas Clave |
-| :--- | :--- | :--- |
-| **Arquitectura Base** | ✅ Completo | Next.js 14 App Router, Tailwind, Framer Motion |
-| **Design System** | ✅ Completo | Variables CSS, fuentes Google, paleta Sporty Tech |
-| **Catálogo JSON** | ✅ Completo | Zod validation, Server Components, SEO dinámico |
-| **Navegación Móvil** | ✅ Completo | StickyBottomNav, CategoryRail con scroll-snap |
-| **Pagos Blink** | ✅ Completo | QR dinámico, POS URL, mock API listo para live |
-| **AI Assistant** | ✅ Completo | Groq SDK, prompts separados, RAG-ready |
-| **WhatsApp** | ✅ Completo | Click-to-chat, plantillas, notify-lead API route |
-| **Footer Oficial** | ✅ Completo | Bull Bitcoin sponsor, AceptaBitcoin.org credits |
-| **Documentación** | ✅ Completo | README.md, design-system.md, map.md |
+- **lib/utils.ts:** Funciones esenciales `cn()` para Tailwind, `formatPrice()` para MXN y `truncateText()`.
+- **lib/products.ts:** Sistema de gestión de catálogo basado en JSON. Validación estricta con Zod y carga nativa de Next.js.
+- **lib/blink.ts:** Integración "Lite" con Blink POS. Generación de URLs de pago con conversión automática MXN a USD.
+- **lib/groq.ts & prompts/padel-expert.ts:** Cerebro del Asistente Virtual. Prompt engineering con delimitadores XML para inyección de contexto de productos y FAQs.
+- **lib/whatsapp.ts:** Estrategia de conversión. Plantillas predefinidas para leads, consultas de producto y fallback de IA.
+- **lib/validations.ts:** Esquemas de seguridad para datos de entrada.
 
-### 🔧 Configuraciones Activas
+## 3. Base de Datos Estática (/data)
 
--   **Repositorio:** `https://github.com/ScubaAI/padel-club-lite`
--   **Remote:** origin/master (sincronizado)
--   **Variables Críticas:** GROQ_API_KEY, BLINK_POS_URL, WHATSAPP_NUMBER (+525586765117)
--   **Contacto Dev:** hola@aceptabitcoin.org
+- **products.json:** Catálogo inicial poblado con productos reales (Siux, Bullpadel). Estructura estandarizada con precios en MXN, specs técnicos para la IA y soporte para variantes.
 
-### ⚠️ Deuda Técnica & Próximos Pasos
+## 4. Alineación con Master Map
 
-Estas son tareas identificadas pero NO bloqueantes para el MVP actual:
+- ✅ Arquitectura de Rutas: Preparada para Route Groups (marketing) y (shop).
+- ✅ Flujo de Datos: Confirmado el enfoque JSON-driven sin SQL por ahora.
+- ✅ Eventos: Lógica lista para StickyBottomNav, InterestModal y PadelPayModal.
 
-1.  [ ] Configurar Twilio/Meta WhatsApp API real (actualmente usa wa.me links)
-2.  [ ] Reemplazar mock de Blink por API key de producción (`sk_live_...`)
-3.  [ ] Implementar RAG real para AI (Pinecone/Supabase Vector)
-4.  [ ] Agregar analytics (Plausible/GA4) para medir conversión WhatsApp
-5.  [ ] Crear `.env.example` seguro para nuevos colaboradores
-6.  [ ] Setup husky + lint-staged para pre-commit hooks
+## 🚧 Próximos Pasos (Sprint 2)
 
-### 🐛 Bugs Conocidos / Observaciones
-
--   El botón "Pagar con Sats" usa URL de Blink POS; la invoice directa vía GraphQL está comentada hasta tener API key.
--   Las imágenes de Unsplash en Hero son temporales; reemplazar por Vercel Blob cuando tengamos fotos reales de productos.
--   El VirtualAssistant no persiste historial entre sesiones (diseño intencional para privacidad MVP).
-
-### 📅 Próximo Sprint Sugerido
-
-**Objetivo:** Validación en vivo y optimización de conversión.
-1.  Deploy a Vercel production
-2.  Testeo de flujo completo en móvil real (iPhone + Android)
-3.  Medición de CTR en botón WhatsApp y Blink Pay
-4.  Ajuste de System Prompt de Groq basado en queries reales
-
----
-
-*Última actualización: 2026-06-11 | Autor: ScubaAI / AceptaBitcoin.org*
+1. Construcción de `app/layout.tsx` con carga de fuentes y `ThemeProvider`.
+2. Desarrollo de componentes compartidos: `StickyBottomNav` y `CategoryRail`.
+3. Implementación de la Landing Page (`/`) y el Grid de Catálogo (`/catalogo`).

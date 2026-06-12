@@ -17,7 +17,7 @@ export default async function CatalogPage({
   const query = searchParams?.q as string;
 
   const filteredProducts = products.filter((p) => {
-    const matchesCategory = category ? p.category === category : true;
+    const matchesCategory = category ? p.categoryId === category : true;
     const matchesSearch = query 
       ? p.name.toLowerCase().includes(query.toLowerCase()) || 
         p.description?.toLowerCase().includes(query.toLowerCase())

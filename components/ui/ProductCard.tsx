@@ -35,7 +35,7 @@ export function ProductCard({ product }: ProductCardProps) {
           
           {/* Badge de Categoría (Solo visible en hover o siempre si es pequeño) */}
           <span className="absolute top-2 left-2 bg-secondary/90 backdrop-blur-sm text-white text-[10px] font-space-grotesk font-bold px-2 py-1 rounded uppercase tracking-wider">
-            {product.category}
+             {product.categoryId}
           </span>
         </div>
 

@@ -1,14 +1,11 @@
 // lib/whatsapp.ts
+import { formatPrice } from './utils';
 
-export const WHATSAPP_NUMBER = '525586765117'; // Formato E.164 sin +
-
-export interface WhatsappTemplate {
-  text: string;
-  encodedUrl: string;
-}
+// Número oficial de la tienda en formato E.164 sin el símbolo "+"
+export const WHATSAPP_NUMBER = '525586765117'; 
 
 /**
- * Genera enlace Click-to-Chat con mensaje predefinido
+ * Genera un enlace universal de Click-to-Chat para WhatsApp.
  */
 export function createWhatsappLink(message: string): string {
   const encodedMessage = encodeURIComponent(message);
@@ -16,18 +13,46 @@ export function createWhatsappLink(message: string): string {
 }
 
 /**
- * Plantillas de mensajes según contexto
+ * Plantillas estandarizadas y persuasivas de mensajes para cerrar conversiones.
  */
 export const WA_TEMPLATES = {
-  leadGeneral: (name: string, phone: string) => 
-    `Hola! 👋 Soy ${name}. Me interesa consultar disponibilidad de productos en Padel Outlet Club. Mi tel: ${phone}`,
+  /**
+   * Lead capturado desde el modal de interés general o formulario de contacto.
+   */
+  leadGeneral: (name: string, info?: string) => {
+    return `Hola! 👋 Me interesa consultar disponibilidad en Padel Outlet Club.\n\n` +
+           `👤 Nombre: ${name}\n` +
+           `${info ? `📝 Consulta: ${info}` : 'Quiero ver qué palas o accesorios tienen disponibles.'}`;
+  },
   
-  productInquiry: (productName: string, price: number) => 
-    `Hola! 🎾 Vi la ${productName} ($${price}) en su web y quiero saber si tienen stock/tallas disponibles.`,
-  
-  aiFallback: (lastQuestion: string) => 
-    `Hola! El asistente virtual no pudo responder mi duda: "${lastQuestion}". ¿Podrían ayudarme?`,
+  /**
+   * Disparado cuando el usuario quiere una variante específica o una pala del catálogo.
+   */
+  productInquiry: (params: { productName: string; price: number; variant?: string; slug: string }) => {
+    const formattedPrice = formatPrice(params.price, 'MXN');
+    const variantText = params.variant ? ` (Talla/Variante: *${params.variant}*)` : '';
     
-  blinkPaymentSupport: (amount: number, productId?: string) =>
-    `Hola! ⚡ Quiero confirmar un pago de $${amount} USD vía Blink/Lightning${productId ? ` para el producto ${productId}` : ''}. ¿Me apoyan?`
+    return `Hola Padel Outlet! 🎾 Estoy interesado en este producto de la web:\n\n` +
+           `📦 *${params.productName}*${variantText}\n` +
+           `💰 Precio: ${formattedPrice}\n` +
+           `🔗 Link: ${process.env.NEXT_PUBLIC_APP_URL || 'https://padeloutlet.club'}/catalogo/${params.slug}\n\n` +
+           `¿Tienen stock disponible para entrega inmediata?`;
+  },
+  
+  /**
+   * El salvavidas cuando el bot de IA de Groq se traba o no conoce la respuesta.
+   */
+  aiFallback: (lastQuestion: string) => {
+    return `Hola! El asistente virtual de la página no pudo resolver mi duda. ¿Me podrían ayudar un asesor humano? 🧑‍💻\n\n` +
+           `❓ Mi duda era:\n"${lastQuestion}"`;
+  },
+  
+  /**
+   * Verificación manual de pagos Blink POS (Enfoque Ultra-Lite).
+   */
+  blinkPaymentSupport: (amountInUsd: number, productName: string) => {
+    return `Hola! ⚡ Acabo de realizar un pago de *$${amountInUsd.toFixed(2)} USD* a través de Blink POS para apartar el siguiente producto:\n\n` +
+           `🎾 Producto: *${productName}*\n\n` +
+           `¿Podrían confirmarme si ya se reflejó en su wallet para coordinar el envío? 📦`;
+  }
 };

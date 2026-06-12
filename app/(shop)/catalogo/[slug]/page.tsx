@@ -88,7 +88,7 @@ export default function ProductDetailPage({
           {/* Categoría + Nombre */}
           <div>
             <span className="inline-block bg-accent/20 text-secondary text-xs font-space-grotesk font-bold px-3 py-1 rounded uppercase tracking-wider mb-3">
-              {product.category}
+              {product.categoryId}
             </span>
             <h1 className="font-oswald text-3xl sm:text-4xl font-bold text-secondary uppercase leading-tight">
               {product.name}

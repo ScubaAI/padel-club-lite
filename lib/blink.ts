@@ -1,74 +1,38 @@
 // lib/blink.ts
-export interface BlinkInvoiceParams {
-  amount: number;
-  currency: 'USD' | 'BTC';
-  memo?: string;
+
+export interface BlinkPosParams {
+  amount: number;      // Precio del producto (ej: 4699.00)
+  currency: 'MXN' | 'USD'; 
+  memo: string;        // Nombre del producto + variante para identificar la venta en tu app de Blink
 }
 
-export interface BlinkInvoiceResponse {
-  invoice: string; // lightning:lnbc...
-  paymentRequest: string;
-  expiresAt: Date;
-  id: string;
+// Alias para compatibilidad con imports existentes
+export type BlinkInvoiceParams = BlinkPosParams;
+
+/**
+ * Convierte de manera aproximada MXN a USD para la POS de Blink.
+ * Nota: Modifica la constante FX_RATE según el mercado actual.
+ */
+function convertMxnToUsd(mxnAmount: number): number {
+  const FX_RATE = 17.5; 
+  return Math.round((mxnAmount / FX_RATE) * 100) / 100;
 }
 
 /**
- * Genera URL de Blink POS para redirección directa (MVP Rápido)
+ * Genera la URL directa a tu punto de venta en Blink.
+ * El usuario dará clic y completará el pago nativamente en la web de Blink.
  */
-export function getBlinkPosUrl(params: BlinkInvoiceParams): string {
+export function getBlinkPosUrl(params: BlinkPosParams): string {
   const baseUrl = process.env.NEXT_PUBLIC_BLINK_POS_URL || 'https://pay.blink.sv/padeloutlet';
+  
+  // Forzamos conversión si la data viene en MXN ya que la POS de Blink suele configurarse en USD o Sats
+  const finalAmount = params.currency === 'MXN' ? convertMxnToUsd(params.amount) : params.amount;
+
   const searchParams = new URLSearchParams({
-    amount: params.amount.toString(),
-    currency: params.currency,
-    ...(params.memo && { memo: params.memo }),
+    amount: finalAmount.toString(),
+    currency: 'USD', // Asegura que la POS reciba el valor interpretado en USD
+    memo: params.memo,
   });
   
   return `${baseUrl}?${searchParams.toString()}`;
-}
-
-/**
- * Crea Invoice Lightning vía API (Para integración avanzada futura)
- * NOTA: Requiere BLINK_API_KEY en .env.local
- */
-export async function createBlinkInvoice(params: BlinkInvoiceParams): Promise<BlinkInvoiceResponse> {
-  // TODO: Descomentar cuando tengas API Key
-  /*
-  const response = await fetch('https://api.blink.sv/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-KEY': process.env.BLINK_API_KEY!,
-    },
-    body: JSON.stringify({
-      query: `mutation LnUsdInvoiceCreate($input: LnUsdInvoiceCreateInput!) {
-        lnUsdInvoiceCreate(input: $input) {
-          invoice { paymentRequest }
-        }
-      }`,
-      variables: {
-        input: {
-          walletId: "TU_WALLET_ID",
-          amount: params.amount,
-          memo: params.memo,
-        }
-      }
-    })
-  });
-  const data = await response.json();
-  return {
-    invoice: data.data.lnUsdInvoiceCreate.invoice.paymentRequest,
-    paymentRequest: data.data.lnUsdInvoiceCreate.invoice.paymentRequest,
-    expiresAt: new Date(Date.now() + 15 * 60 * 1000),
-    id: `blink_${Date.now()}`,
-  };
-  */
-
-  // Mock seguro para desarrollo MVP
-  console.log('⚡ [BLINK MOCK] Invoice generada:', params);
-  return {
-    invoice: `lightning:lnbc${params.amount}u1mock_invoice_for_${params.memo}`,
-    paymentRequest: `lnbc${params.amount}u1mock_pr`,
-    expiresAt: new Date(Date.now() + 15 * 60 * 1000),
-    id: `mock_${Date.now()}`,
-  };
 }

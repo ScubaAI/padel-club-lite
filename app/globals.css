@@ -4,31 +4,27 @@
 
 /* ============================================================
    1. VARIABLES DE DISEÑO (Design Tokens)
-   Sincronizadas con design-system.md para consistencia total
+   Sincronizadas con design-system.md y Next.js App Router
    ============================================================ */
 @layer base {
   :root {
     /* Paleta Sporty Tech Minimalist */
     --color-primary: #00D4FF;      /* Electric Blue - Energía/Tech */
-    --color-secondary: #1A1A1A;    /* Deep Charcoal - Contraste/Premium */
+    --color-secondary: #1A1A1A;    /* Deep Charcoal - Componentes Premium */
     --color-accent: #CCFF00;       /* Neon Lime - Acción/CTAs */
-    --color-background: #FFFFFF;   /* Clean White */
-    --color-surface: #F5F5F7;      /* Light Gray - Tarjetas/Inputs */
+    --color-bitcoin: #F7931A;      /* Bitcoin Orange - Pagos */
     
-    /* Bitcoin / Pagos (Reservado para Blink/Lightning) */
-    --color-bitcoin: #F7931A;      
-    
-    /* Tipografía Base */
-    --font-oswald: 'Oswald', sans-serif;
-    --font-inter: 'Inter', sans-serif;
-    --font-space: 'Space Grotesk', monospace;
+    /* Variables de Capas Semánticas */
+    --color-background: #FFFFFF;   /* Fondo de la app (Light) */
+    --color-surface: #F5F5F7;      /* Tarjetas / Inputs (Light) */
+    --color-text: #1A1A1A;         /* Texto principal (Light) */
   }
 
-  /* Modo Oscuro (Preparado para next-themes) */
+  /* Modo Oscuro (Perfectamente integrado con next-themes) */
   .dark {
-    --color-background: #0a0a0a;
-    --color-surface: #171717;
-    --color-secondary: #ffffff;
+    --color-background: #0A0A0A;   /* Fondo ultra-dark */
+    --color-surface: #161618;      /* Tarjetas / Inputs (Dark) */
+    --color-text: #F5F5F7;         /* Texto principal (Dark) */
   }
 
   /* Reset Moderno & Mobile Optimized */
@@ -40,28 +36,29 @@
 
   html {
     scroll-behavior: smooth;
-    -webkit-tap-highlight-color: transparent; /* Elimina flash azul en móviles */
+    -webkit-tap-highlight-color: transparent; /* Elimina flash azul feo al tocar en iOS/Android */
   }
 
   body {
-    font-family: var(--font-inter);
+    /* Usamos las variables inyectadas por Next.js Font en el layout.tsx */
+    font-family: var(--font-inter), sans-serif;
     background-color: var(--color-background);
-    color: var(--color-secondary);
+    color: var(--color-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden; /* Previene scroll horizontal accidental en móvil */
+    overflow-x: hidden; /* Evita que la pantalla baile hacia los lados en móviles */
   }
 
-  /* Tipografía Jerárquica por Defecto */
+  /* Tipografía Jerárquica Aplicada a los Encabezados */
   h1, h2, h3, .heading-sporty {
-    font-family: var(--font-oswald);
+    font-family: var(--font-oswald), sans-serif;
     text-transform: uppercase;
     letter-spacing: -0.02em;
     line-height: 1.1;
   }
 
   .font-tech, code, .price-tag {
-    font-family: var(--font-space);
+    font-family: var(--font-space), monospace;
   }
 }
 
@@ -69,38 +66,30 @@
    2. UTILIDADES PERSONALIZADAS (Mobile-First UX)
    ============================================================ */
 @layer utilities {
-  /* Scroll Snap Nativo para Categorías (CategoryRail) */
-  .scroll-snap-x {
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-  }
-  .scroll-snap-x::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-  
-  .snap-start { scroll-snap-align: start; }
-  .snap-center { scroll-snap-align: center; }
+  /* NOTA: Las utilidades de scroll-snap ya se usan mediante las clases nativas 
+     de Tailwind: 'snap-x mandatory' y 'snap-start'. Aquí solo dejamos lo custom. */
 
-  /* Safe Area para Móviles (Notch/Home Indicator) */
+  /* Safe Area Padding para pantallas con Notch o barra de gestos (iPhone / Android) */
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
   .safe-top { padding-top: env(safe-area-inset-top); }
 
-  /* Efectos de Interacción Premium */
-  .tap-scale { transition: transform 0.15s ease; }
-  .tap-scale:active { transform: scale(0.96); }
+  /* Feedback táctil premium para botones en mobile */
+  .tap-scale { transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); }
+  .tap-scale:active { transform: scale(0.95); }
 
-  /* Sombras Neón Controladas */
-  .shadow-neon-lime { box-shadow: 0 0 20px -5px rgba(204, 255, 0, 0.4); }
-  .shadow-neon-blue { box-shadow: 0 0 20px -5px rgba(0, 212, 255, 0.4); }
+  /* Sombras de Neón controladas para el acabado Sporty Tech */
+  .shadow-neon-lime { box-shadow: 0 0 25px -5px rgba(204, 255, 0, 0.35); }
+  .shadow-neon-blue { box-shadow: 0 0 25px -5px rgba(0, 212, 255, 0.35); }
 }
 
 /* ============================================================
-   3. ANIMACIONES GLOBALES (Framer Motion Helpers)
+   3. ANIMACIONES GLOBALES (Micro-interacciones de la UI)
    ============================================================ */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-in-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

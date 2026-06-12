@@ -19,7 +19,7 @@ export function BlinkPayButton({ product }: BlinkPayButtonProps) {
 
   const blinkParams: BlinkInvoiceParams = {
     amount: product.price,
-    currency: product.currency as 'USD' | 'BTC',
+    currency: product.currency as 'USD' | 'MXN',
     memo: `PADEL_${product.slug.toUpperCase()}`,
   };
 
